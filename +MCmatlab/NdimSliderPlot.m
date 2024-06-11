@@ -23,6 +23,9 @@ function [h_f,h_a] = NdimSliderPlot(data,varargin)
   % and is not intended to be for general-purpose use:
   addOptional(p,'indexLabels',{},@(x)iscell(x)); % For geometry illustration plots
 
+  addOptional(p,'maxelement',[],@(x)isnumeric(x)); % If set, will specify the upper limit of the plot
+  addOptional(p,'minelement',[],@(x)isnumeric(x)); % If set, will specify the lower limit of the plot
+
   parse(p,varargin{:});
 
   if isempty(p.Results.axisValues)
@@ -155,14 +158,19 @@ function [h_f,h_a] = NdimSliderPlot(data,varargin)
   h_checkbox = uicontrol('Parent',h_f,'Style','checkbox','String','log plot','BackgroundColor','w','Position',[10,nSl*20 + 13,55,20]);
 
   %% Do the plotting
-  maxelement = max(data(:));
-  if p.Results.fromZero
-    minelement = 0;
+  if isempty(p.Results.maxelement) || isempty(p.Results.minelement)
+    maxelement = max(data(:));
+    if p.Results.fromZero
+      minelement = 0;
+    else
+      minelement = min(data(:));
+    end
+    if maxelement == minelement
+      maxelement = minelement + 1;
+    end
   else
-    minelement = min(data(:));
-  end
-  if maxelement == minelement
-    maxelement = minelement + 1;
+    maxelement = p.Results.maxelement;
+    minelement = p.Results.minelement;
   end
 
   switch nAx

@@ -195,10 +195,12 @@ function model = simulateHeatDistribution(model)
       'axisEqual',true,...
       'reversedAxes',3,...
       'slicePositions',model.HS.slicePositions,...
-      'docked',~model.HS.makeMovie);
+      'docked',~model.HS.makeMovie,...
+      'maxelement',model.HS.plotTempLimits(2),...
+      'minelement',model.HS.plotTempLimits(1));
     heatsimFigure.Name = 'Temperature evolution';
     h_title = title(['Temperature evolution, t = ' num2str(updatesTimeVector(1),'%#.2g') ' s']);
-    caxis(model.HS.plotTempLimits); % User-defined color scale limits
+    % caxis(model.HS.plotTempLimits); % User-defined color scale limits
     if model.HS.makeMovie && firstHSrun
       movieFrames(movieFrameidx) = getframe(heatsimFigure);
       movieFrameidx = movieFrameidx + 1;
@@ -430,7 +432,7 @@ function model = simulateHeatDistribution(model)
 
   for iM=1:nM
     if model.HS.maxMediaTemps(iM) > 100
-      fprintf("\nWarning: %s reaches a temperature above 100°C. If this medium contains\nwater, it will likely undergo changes not modeled in this code.\n\n", mP_fHtrim(iM).name);
+      fprintf("\nWarning: %s reaches a temperature above 100ï¿½C. If this medium contains\nwater, it will likely undergo changes not modeled in this code.\n\n", mP_fHtrim(iM).name);
     end
   end
 

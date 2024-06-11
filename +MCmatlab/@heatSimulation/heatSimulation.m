@@ -18,7 +18,7 @@ classdef heatSimulation
 
     nPulses (1,1) double {mustBeInteger, mustBePositive} = 1 % Number of consecutive pulses, each with an illumination phase and a diffusion phase. If simulating only illumination or only diffusion, use n_pulses = 1.
 
-    plotTempLimits (1,2) {mustBeAllFiniteOrAllNaN} = [NaN NaN] % [deg C] Expected range of temperatures, used only for setting the color scale in the plot
+    plotTempLimits (1,2) {mustBeAllFiniteOrAllNaN, mustBeIncreasing} = [NaN NaN] % [deg C] Expected range of temperatures, used only for setting the color scale in the plot
     nUpdates (1,1) {mustBeInteger, mustBePositive} = 10 % Number of times data is extracted for plots during each pulse. A minimum of 1 update is performed in each phase (2 for each pulse consisting of an illumination phase and a diffusion phase)
     mediaPropRecalcPeriod (1,1) {mustBeInteger, mustBeNonnegative} = 0 % Every N updates, the media properties will be recalculated (including, if needed, re-running MC and FMC steps)
 
@@ -62,6 +62,12 @@ if all(isnan(x)) || all(isfinite(x))
   % Valid input
 else
   error('Value must be all NaNs or all finite values.');
+end
+end
+
+function mustBeIncreasing(value)
+if ~isempty(value) && value(2) <= value(1)
+  error('The second element must be larger than the first element.')
 end
 end
 
