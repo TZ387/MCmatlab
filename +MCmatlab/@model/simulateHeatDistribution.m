@@ -432,7 +432,7 @@ function model = simulateHeatDistribution(model)
 
   for iM=1:nM
     if model.HS.maxMediaTemps(iM) > 100
-      fprintf("\nWarning: %s reaches a temperature above 100�C. If this medium contains\nwater, it will likely undergo changes not modeled in this code.\n\n", mP_fHtrim(iM).name);
+      fprintf("\nWarning: %s reaches a temperature above 100°C. If this medium contains\nwater, it will likely undergo changes not modeled in this code.\n\n", mP_fHtrim(iM).name);
     end
   end
 
