@@ -75,7 +75,9 @@ if numTemperatureSensors
     sensorNumbers{i,1} = num2str(i);
     sensorLabels{i,1} = [num2str(i) ', ' mP_fHtrim(G.M_raw(linindex)).name];
   end
-  text(model.HS.tempSensorPositions(:,1),model.HS.tempSensorPositions(:,2),model.HS.tempSensorPositions(:,3),sensorNumbers,'HorizontalAlignment','center','VerticalAlignment','middle','FontSize',18);
+  text(model.HS.tempSensorPositions(:,1)+G.dx,model.HS.tempSensorPositions(:,2),model.HS.tempSensorPositions(:,3),sensorNumbers,'HorizontalAlignment','left','VerticalAlignment','middle','FontSize',18,'FontWeight', 'bold');
+  hold on;
+  scatter3(model.HS.tempSensorPositions(:,1),model.HS.tempSensorPositions(:,2),model.HS.tempSensorPositions(:,3),35,'k','Marker','.')
 
   h_f = figure(24);
   clf reset;
