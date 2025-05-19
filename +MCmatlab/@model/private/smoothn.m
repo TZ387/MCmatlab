@@ -468,7 +468,23 @@ while RobustIterativeProcess
         end
         
         % if no weighted/missing data => tol=0 (no iteration)
-        tol = isweighted*norm(vec([z0{:}]-[z{:}]))/norm(vec([z{:}]));
+        % tol = isweighted*norm(vec([z0{:}]-[z{:}]))/norm(vec([z{:}]));
+        % MEMORY-EFFICIENT COMPUTATION OF TOLERANCE CRITERION
+        % Calculate the norm of the difference incrementally for each cell component
+        % This avoids the memory-intensive concatenation operation that caused out of memory error
+        if isweighted
+            numer = 0;
+            denom = 0;
+            for i = 1:ny
+                % Calculate the squared norm for each component separately
+                diff_i = z0{i} - z{i};
+                numer = numer + sum(diff_i(:).^2);
+                denom = denom + sum(z{i}(:).^2);
+            end
+            tol = sqrt(numer/denom);
+        else
+            tol = 0; % no weighted/missing data => no iteration required
+        end
        
         z0 = z; % re-initialization
     end
